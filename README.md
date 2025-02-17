@@ -1,7 +1,7 @@
 # strapi-provider-upload-google-cloud-storage
 
-[![npm version](https://img.shields.io/npm/v/@strapi-community/strapi-provider-upload-google-cloud-storage.svg)](https://www.npmjs.org/package/@strapi-community/strapi-provider-upload-google-cloud-storage)
-[![npm downloads](https://img.shields.io/npm/dm/@strapi-community/strapi-provider-upload-google-cloud-storage.svg)](https://www.npmjs.org/package/@strapi-community/strapi-provider-upload-google-cloud-storage)
+[![npm version](https://img.shields.io/npm/v/@devx-strapi/strapi-provider-upload-google-cloud-storage.svg)](https://www.npmjs.org/package/@devx-strapi/strapi-provider-upload-google-cloud-storage)
+[![npm downloads](https://img.shields.io/npm/dm/@devx-strapi/strapi-provider-upload-google-cloud-storage.svg)](https://www.npmjs.org/package/@devx-strapi/strapi-provider-upload-google-cloud-storage)
 [![coverage](https://codecov.io/gh/strapi-community/strapi-provider-upload-google-cloud-storage/branch/master/graph/badge.svg?token=p4KW9ytA6u)](https://codecov.io/gh/strapi-community/strapi-provider-upload-google-cloud-storage)
 
 **Non-Official** Google Cloud Storage Provider for Strapi Upload
@@ -12,12 +12,12 @@ Install the package from your app root directory
 
 with `npm`
 ```
-npm install @strapi-community/strapi-provider-upload-google-cloud-storage --save
+npm install @devx-strapi/strapi-provider-upload-google-cloud-storage --save
 ```
 
 or `yarn`
 ```
-yarn add @strapi-community/strapi-provider-upload-google-cloud-storage
+yarn add @devx-strapi/strapi-provider-upload-google-cloud-storage
 ```
 
 ## <a name="create-bucket"></a> Create your Bucket on Google Cloud Storage
@@ -67,7 +67,7 @@ Edit `./config/plugins.js`
 module.exports = {
     upload: {
       config: {
-        provider: '@strapi-community/strapi-provider-upload-google-cloud-storage',
+        provider: '@devx-strapi/strapi-provider-upload-google-cloud-storage',
         providerOptions: {
             bucketName: '#bucketName#',
             publicFiles: false,
@@ -92,7 +92,7 @@ Edit `./config/plugins.js`
 module.exports = {
     upload: {
       config: {
-        provider: '@strapi-community/strapi-provider-upload-google-cloud-storage',
+        provider: '@devx-strapi/strapi-provider-upload-google-cloud-storage',
         providerOptions: {
             bucketName: '#bucketName#',
             publicFiles: true,
@@ -119,7 +119,7 @@ This file, under `config/env/{env}/` will be overriding default configuration pr
 module.exports = ({ env }) => ({
     upload: {
       config: {
-        provider: '@strapi-community/strapi-provider-upload-google-cloud-storage',
+        provider: '@devx-strapi/strapi-provider-upload-google-cloud-storage',
         providerOptions: {
           serviceAccount: env.json('GCS_SERVICE_ACCOUNT'),
           bucketName: env('GCS_BUCKET_NAME'),
