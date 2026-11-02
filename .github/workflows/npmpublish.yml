@@ -28,13 +28,8 @@ jobs:
         run: |
           version="${GITHUB_REF_NAME#v}"
           echo "VERSION=$version" >> "$GITHUB_OUTPUT"
-          if [[ "$version" == *-* ]]; then
-            echo "DIST_TAG=next" >> "$GITHUB_OUTPUT"
-          else
-            echo "DIST_TAG=latest" >> "$GITHUB_OUTPUT"
-          fi
       - name: Set package version
         run: yarn version --new-version "${{ steps.get_version.outputs.VERSION }}" --no-git-tag-version
       - name: Stage package for approval
         if: '!github.event.release.prerelease'
-        run: npm stage publish --access public --tag "${{ steps.get_version.outputs.DIST_TAG }}" --registry=https://registry.npmjs.org/
+        run: npm stage publish --access public --tag latest --registry=https://registry.npmjs.org/
