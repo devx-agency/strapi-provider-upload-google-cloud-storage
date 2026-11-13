@@ -504,6 +504,23 @@ describe('Provider', () => {
   });
 
   describe('Delete', () => {
+    test.each(['https://storage.googleapis.com/{bucket-name}', 'https://cdn.example.com/assets'])(
+      'Deletes the original object from a signed URL with base URL %s',
+      async (baseUrl) => {
+        const fileName = 'base/path/image/image.png';
+        const file = {
+          ...mockedFileData,
+          url: `${baseUrl.replace('{bucket-name}', mockedConfig.bucketName)}/${fileName}?X-Goog-Algorithm=GOOG4-RSA-SHA256&X-Goog-Signature=old#preview`,
+        };
+        const providerInstance = provider.init({ ...mockedConfig, baseUrl });
+
+        await providerInstance.delete(file);
+
+        expect(mockedBucket.file).toHaveBeenCalledWith(fileName);
+        expect(mockedFile.delete).toHaveBeenCalledTimes(1);
+      }
+    );
+
     test('Deletes file', async () => {
       mockedFileData.url = 'base/path/tmp/strapi/4l0ngH45h.jpeg';
       const providerInstance = provider.init(mockedConfig);
@@ -592,6 +609,28 @@ describe('Provider', () => {
   });
 
   describe('Get signed url', () => {
+    test.each(['https://storage.googleapis.com/{bucket-name}', 'https://cdn.example.com/assets'])(
+      'Signs the same object twice with base URL %s',
+      async (baseUrl) => {
+        const fileName = 'base/path/image/image.png';
+        const file = {
+          ...mockedFileData,
+          url: `${baseUrl.replace('{bucket-name}', mockedConfig.bucketName)}/${fileName}`,
+        };
+        const signedUrl = `${file.url}?X-Goog-Algorithm=GOOG4-RSA-SHA256&X-Goog-Signature=old#preview`;
+        mockedFile.getSignedUrl.mockReturnValueOnce([signedUrl]);
+        const providerInstance = provider.init({ ...mockedConfig, baseUrl, publicFiles: false });
+
+        const signedFile = await providerInstance.getSignedUrl(file);
+        await providerInstance.getSignedUrl({ ...file, ...signedFile });
+
+        expect(mockedBucket.file).toHaveBeenCalledTimes(2);
+        expect(mockedBucket.file).toHaveBeenNthCalledWith(1, fileName);
+        expect(mockedBucket.file).toHaveBeenNthCalledWith(2, fileName);
+        expect(file.url).not.toContain('?');
+      }
+    );
+
     test('Calls signed url with default values', async () => {
       jest.useFakeTimers().setSystemTime(new Date('2020-01-01'));
       mockedFileData.url = 'base/path/tmp/strapi/4l0ngH45h.jpeg';
