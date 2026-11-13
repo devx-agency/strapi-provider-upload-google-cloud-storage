@@ -76,7 +76,7 @@ export default {
           return;
         }
 
-        const fileName = file.url.replace(`${baseUrl}/`, '');
+        const fileName = file.url.replace(/[?#].*$/, '').replace(`${baseUrl}/`, '');
         const bucket = GCS.bucket(config.bucketName);
         try {
           await bucket.file(fileName).delete();
@@ -98,7 +98,7 @@ export default {
             action: 'read',
             expires: getExpires(config.expires),
           };
-          const fileName = file.url.replace(`${baseUrl}/`, '');
+          const fileName = file.url.replace(/[?#].*$/, '').replace(`${baseUrl}/`, '');
           const [url] = await GCS.bucket(config.bucketName).file(fileName).getSignedUrl(options);
           return { url };
         } catch (error) {
